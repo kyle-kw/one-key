@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:6.2.2
+    container_name: redis
+    hostname: redis
+    restart: always
+    command: redis-server --requirepass zyWGcdW4QOMcjXpw --appendonly no
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+
+  mysql:
+    image: mysql:8.0.26
+    hostname: mysql
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "OVFEirCr3vmX49xU"
+      MYSQL_DATABASE: "one"
+      TZ: Asia/Shanghai
+    command:
+      --wait_timeout=31536000
+      --interactive_timeout=31536000
+      --max_connections=1000
+      --default-authentication-plugin=mysql_native_password
+    volumes:
+      - "./data/mysql/data/mysql/data:/var/lib/mysql"
+      - "./data/mysql/data/mysql/logs:/logs"
+
+  one-key:
+    image: one-key:0.0.11
+    container_name: one-key
+    hostname: one-key
+    restart: always
+    environment:
+      DB_URL: mysql+pymysql://root:OVFEirCr3vmX49xU@mysql:3306/one
+      REDIS_URL: redis://:zyWGcdW4QOMcjXpw@redis:6379/0
+      SAVE_LOG: "true"
+      LIMIT_TOKEN: "true"
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./logs:/app/logs"
+    depends_on:
+      - mysql
+      - redis
+
