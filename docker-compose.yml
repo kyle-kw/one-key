@@ -31,7 +31,7 @@ services:
       - "./data/mysql/data/mysql/logs:/logs"
 
   one-key:
-    image: one-key:0.0.11
+    image: kewei159/one-key:latest
     container_name: one-key
     hostname: one-key
     restart: always

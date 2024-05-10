@@ -23,8 +23,38 @@
 
 ### 快速开始
 
+#### Docker 启动
+```shell
+docker run -d -p 8000:8000 \
+   --name one-key kewei159/one-key:latest
+```
 
-### 贡献
+#### Docker compose 启动
+```shell
+mkdir one-key
+cd one-key
+curl -O https://raw.githubusercontent.com/kyle-kw/one-key/main/docker-compose.yml
+docker-compose up -d
+```
 
-### 
+#### 本地启动
+
+建议使用conda创建虚拟环境。其他管理虚拟环境工具也可以。
+```shell
+conda create -y python=3.9 -n one-key
+conda activate one-key
+```
+
+拉取代码并安装依赖
+```shell
+git clone https://github.com/kyle-kw/one-key.git
+cd one-key
+pip install -r requirements.txt
+```
+
+启动服务
+```shell
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
 
