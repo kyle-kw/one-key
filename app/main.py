@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from app.routers import relay_router, relay_compatible_router, other_router, manager_router
 from app.config import env_settings
 
+# 可选接入sentry
 if env_settings.open_sentry:
     import sentry_sdk
 
@@ -13,10 +14,10 @@ if env_settings.open_sentry:
     )
 
 app = FastAPI()
-app.include_router(relay_router)
-app.include_router(relay_compatible_router)
-app.include_router(other_router)
-app.include_router(manager_router)
+app.include_router(relay_router)  # 主要的转发的接口
+app.include_router(relay_compatible_router)  # 兼容老版本的接口
+app.include_router(other_router)  # 扩展的其他接口
+app.include_router(manager_router)  # 管理api的接口
 
 
 @app.exception_handler(HTTPException)
